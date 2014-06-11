@@ -1,0 +1,43 @@
+{
+  "name": "grunt-screenshot-compare-reporter",
+  "version": "0.1.0",
+  "description": "takes in baseline and sample and gives a html report of the differences if found",
+  "keywords": [
+    "gruntplugin",
+    "smartling",
+    "json"
+  ],
+  "author": {
+    "name": "Joseph McElroy",
+    "email": "joe@teneleven.co.uk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phoey/grunt-screenshot-compare-reporter"
+  },
+  "scripts": {
+    "test": "grunt"
+  },
+  "dependencies": {
+    "request": "2.34.0",
+    "async": "0.4.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-coffee": "0.7.0",
+    "q":"1.0.1",
+    "resemble": "1.0.3",
+    "mkdirp":"latest",
+    "underscore":"1.6.0"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.2"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "licenses": {
+    "type": "MIT"
+  }
+}
