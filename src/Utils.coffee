@@ -1,5 +1,6 @@
 fs = require 'fs'
 Q = require 'q'
+mkdirp = require('mkdirp')
 
 module.exports = {
 
@@ -14,6 +15,16 @@ module.exports = {
     rs.on "error", deferred.reject
     ws.on "error", deferred.reject
     rs.pipe(ws)
+    return deferred.promise
+
+  mkDirP: (dir) ->
+    deferred = Q.defer()
+    mkdirp dir, (err) ->
+      if err
+       deferred.reject(err)
+      else
+        deferred.resolve()
+
     return deferred.promise
 
 }

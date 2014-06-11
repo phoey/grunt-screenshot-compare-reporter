@@ -38,19 +38,21 @@ class ScreenshotCompareReporter
     sampleDir = @options.sampleDirectory
     reportDir = @options.reportDirectory
 
-    # get files from baseline and compare with sample
-    for testFile in @getSubFilesByType("#{baselineDir}/#{platformDir}", "file")
+    Utils.mkDirP(reportDir).then =>
 
-      baselineFile = "#{baselineDir}/#{platformDir}/#{testFile}"
-      sampleFile = "#{sampleDir}/#{platformDir}/#{testFile}"
+      # get files from baseline and compare with sample
+      for testFile in @getSubFilesByType("#{baselineDir}/#{platformDir}", "file")
 
-      if Utils.fileExists(baselineFile) and Utils.fileExists(sampleFile)
-        comparison = new FileComparator(testFile, reportDir, {baseline: baselineFile, sample:sampleFile})
-        resultPromises.push comparison.compare()
+        baselineFile = "#{baselineDir}/#{platformDir}/#{testFile}"
+        sampleFile = "#{sampleDir}/#{platformDir}/#{testFile}"
 
-    # add results
-    Q.all(resultPromises).then (results) =>
-      @HTMLReporter.addTestResult(platformDir, results)
+        if Utils.fileExists(baselineFile) and Utils.fileExists(sampleFile)
+          comparison = new FileComparator(testFile, reportDir, {baseline: baselineFile, sample:sampleFile})
+          resultPromises.push comparison.compare()
+
+      # add results
+      Q.all(resultPromises).then (results) =>
+        @HTMLReporter.addTestResult(platformDir, results)
 
   run: ->
     platformRuns = []
