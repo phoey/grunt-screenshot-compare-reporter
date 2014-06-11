@@ -36,9 +36,9 @@ class ScreenshotCompareReporter
 
     baselineDir = @options.baselineDirectory
     sampleDir = @options.sampleDirectory
-    reportDir = @options.reportDirectory
+    reportPlatformDir = "#{@options.reportDirectory}/#{platformDir}"
 
-    Utils.mkDirP(reportDir).then =>
+    Utils.mkDirP(reportPlatformDir).then =>
 
       # get files from baseline and compare with sample
       for testFile in @getSubFilesByType("#{baselineDir}/#{platformDir}", "file")
@@ -47,7 +47,7 @@ class ScreenshotCompareReporter
         sampleFile = "#{sampleDir}/#{platformDir}/#{testFile}"
 
         if Utils.fileExists(baselineFile) and Utils.fileExists(sampleFile)
-          comparison = new FileComparator(testFile, reportDir, {baseline: baselineFile, sample:sampleFile})
+          comparison = new FileComparator(testFile, reportPlatformDir, {baseline: baselineFile, sample:sampleFile})
           resultPromises.push comparison.compare()
 
       # add results
