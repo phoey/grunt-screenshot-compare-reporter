@@ -1,13 +1,23 @@
+Q              = require 'q'
+fs             = require 'fs'
+Utils       = require './Utils'
+
 class HTMLReporter
 
-  constructor: ->
+  constructor: (@resultsDir) ->
     @report = {}
 
   addTestResult: (platform, result) ->
-    @report[platform] ?= []
-    @report[platform].push
+    @report[platform] = result
 
-  createReport: ->
-    console.log @report 
+  copyHtmlReportViewer: ->
+    Utils.copyFile("./resources/reporter.html", "#{@resultsDir}/reporter.html")
+
+  saveReport: =>
+    deferred = Q.defer()
+    fs.writeFile "#{@resultsDir}/results.js", "window.results = #{JSON.stringify(@report)}", =>
+      @copyHtmlReportViewer().then deferred.resolve
+
+    return deferred.promise
 
 module.exports = HTMLReporter

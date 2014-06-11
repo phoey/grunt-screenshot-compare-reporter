@@ -7,12 +7,13 @@ mkdirp         = require 'mkdirp'
 resembleApi    = require 'resemble'
 HTMLReporter   = require './HTMLReporter'
 FileComparator = require './FileComparator'
-_              = require 'underscore'
 Utils          = require './Utils'
+HTMLReporter   = require './HTMLReporter'
 
 class ScreenshotCompareReporter
 
   constructor:(@grunt, @options) ->
+    @HTMLReporter = new HTMLReporter(@options.reportDirectory)
     return @run()
 
   getSubFilesByType: (base, type) ->    
@@ -48,11 +49,8 @@ class ScreenshotCompareReporter
         resultPromises.push comparison.compare()
 
     # add results
-    Q.all(resultPromises).then @saveReport
-
-  saveReport: (results) => 
-    fs.writeFileSync("#{@options.reportDirectory}/results.json", JSON.stringify(results))
-    results
+    Q.all(resultPromises).then (results) =>
+      @HTMLReporter.addTestResult(platformDir, results)
 
   run: ->
     platformRuns = []
@@ -60,7 +58,8 @@ class ScreenshotCompareReporter
     for platformDir in @getSubFilesByType(@options.baselineDirectory, "directory")
       platformRuns.push @runReporterForPlatform(platformDir)
 
-    return Q.all(platformRuns)
+    Q.all(platformRuns)
+      .then(@HTMLReporter.saveReport)
     
 
 module.exports = ScreenshotCompareReporter
