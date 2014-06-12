@@ -7,6 +7,11 @@ module.exports = {
   fileExists: (filePath) ->
     fs.existsSync(filePath)
 
+  writeFile: (path, data) ->
+    deferred = Q.defer()
+    fs.writeFile(path, data, deferred.resolve)
+    return deferred.promise
+
   copyFile: (file, dest) ->
     deferred = Q.defer()
     rs = fs.createReadStream(file)

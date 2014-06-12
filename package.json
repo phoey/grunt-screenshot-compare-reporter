@@ -29,8 +29,9 @@
     "q":"1.0.1",
     "resemble": "1.0.3",
     "mkdirp":"latest",
-    "underscore":"1.6.0"
-  },
+    "grunt-mocha-test":"~0.8.1",
+    "mocha": "^1.18.2"
+   },
   "peerDependencies": {
     "grunt": "~0.4.2"
   },
