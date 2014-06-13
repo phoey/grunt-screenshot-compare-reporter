@@ -53,7 +53,6 @@ class HTMLReporter
   <div ng-repeat="(platformName,platform) in results">
 
     <h1>{{platformName}}</h1>
-    <a ng-click="toggleResultsFilter(platformName)">toggle errors</a>
     <div class="result screenshot" ng-repeat="result in platform | orderBy:'failed':true">
       <h2 ng-class="{'error':result.failed}">{{result.name}}</h2>
       <div class="screenshot-baseline">
