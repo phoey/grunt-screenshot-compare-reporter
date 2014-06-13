@@ -10,7 +10,7 @@ module.exports = function (grunt) {
       if (options.teamcityReporter) {
 
         grunt.log.writeln('##teamcity[testStarted name=\'screenshot compare\']');
-        if (report.failed) {
+        if (report.failed && options.failTeamcity) {
           grunt.log.writeln('##teamcity[testFailed name=\'screenshot compare\' message=\'FAILED\']');
         }
         grunt.log.writeln('##teamcity[testFinished name=\'screenshot compare\']');
