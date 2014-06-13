@@ -52,7 +52,12 @@ class FileComparator
       }
     }
 
-    @storeScreenshot(difference.getImageDataUrl(), @diff).then =>
+    diffScreenshot = difference.getImageDataUrl()
+
+    if diffScreenshot
+      @storeScreenshot(diffScreenshot, @diff)
+        .then => deferred.resolve @result
+    else
       deferred.resolve @result
 
     return deferred.promise

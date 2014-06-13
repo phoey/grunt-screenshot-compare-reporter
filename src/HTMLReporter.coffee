@@ -80,9 +80,11 @@ class HTMLReporter
 
   constructor: (@resultsDir) ->
     @report = {}
+    @failed = false
 
-  addTestResult: (platform, result) ->
-    @report[platform] = result
+  addTestResult: (platform, results) ->
+    @report[platform] = results
+    @failed = true if results.filter((result) -> result.failed ).length > 0
 
   addHtmlReportViewer: =>
     Utils.writeFile("#{@resultsDir}/reporter.html", @htmlReport)

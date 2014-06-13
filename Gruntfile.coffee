@@ -17,6 +17,7 @@ module.exports = (grunt) ->
         baselineDirectory: "./test/resources/baseline"
         sampleDirectory: "./test/resources/sample"
         reportDirectory: "./test-results"
+        teamcityReporter: true
 
 
   grunt.loadTasks('tasks')

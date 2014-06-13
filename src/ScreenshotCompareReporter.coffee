@@ -13,7 +13,7 @@ HTMLReporter   = require './HTMLReporter'
 class ScreenshotCompareReporter
 
   constructor:(@grunt, @options) ->
-    @HTMLReporter = new HTMLReporter(@options.reportDirectory)
+    @reporter = new HTMLReporter(@options.reportDirectory)
     return @run()
 
   getSubFilesByType: (base, type) ->    
@@ -52,7 +52,7 @@ class ScreenshotCompareReporter
 
       # add results
       Q.all(resultPromises).then (results) =>
-        @HTMLReporter.addTestResult(platformDir, results)
+        @reporter.addTestResult(platformDir, results)
 
   run: ->
     platformRuns = []
@@ -61,7 +61,9 @@ class ScreenshotCompareReporter
       platformRuns.push @runReporterForPlatform(platformDir)
 
     Q.all(platformRuns)
-      .then(@HTMLReporter.saveReport)
+      .then(@reporter.saveReport)
+      .then =>
+        return @reporter
     
 
 module.exports = ScreenshotCompareReporter
