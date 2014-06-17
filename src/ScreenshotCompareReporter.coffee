@@ -1,6 +1,5 @@
 
 fs             = require 'fs'
-async          = require 'async'
 path           = require 'path'
 Q              = require 'q'
 mkdirp         = require 'mkdirp'
