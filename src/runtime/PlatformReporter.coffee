@@ -4,6 +4,8 @@ module.exports = (options, _, Util, Promise, FileUtils, path, ImageComparison, m
   class PlatformReporter
 
     constructor:(@platform)->
+      @baselinePlatform = path.join(options.baselineDirectory,@platform)
+      @samplePlatform = path.join(options.sampleDirectory,@platform)
 
     @run:(platform)->
       new PlatformReporter(platform).run()
@@ -18,12 +20,11 @@ module.exports = (options, _, Util, Promise, FileUtils, path, ImageComparison, m
 
     createReportDir:()=>
       mkdirpAsync path.join(options.reportDirectory, @platform)
+
     getAllFiles:()=>
-      Promise.all([
-        FileUtils.getFiles(path.join(options.baselineDirectory,@platform))
-        FileUtils.getFiles(path.join(options.sampleDirectory,@platform))
-      ]).then (@results)=>
-        @filenames = _.uniq(_.flatten(@results))
+      FileUtils.flatFilenames([@baselinePlatform, @samplePlatform])
+        .then (@filenames)=>
+
 
     compareFiles:()=>
       Promise.all(_.map @filenames, @compareFile)

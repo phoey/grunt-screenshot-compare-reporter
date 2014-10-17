@@ -4,7 +4,6 @@ module.exports = (Util, Promise, _, FileUtils, PlatformReporter, options, HTMLRe
 
 
     constructor:()->
-      console.log options
       @baselineDir = options.baselineDirectory
       @sampleDir = options.sampleDirectory
       @reportDir = options.reportDirectory
@@ -25,11 +24,8 @@ module.exports = (Util, Promise, _, FileUtils, PlatformReporter, options, HTMLRe
 
 
     getPlatforms:()=>
-      Promise.all([
-        FileUtils.getDirectories(@baselineDir)
-        FileUtils.getDirectories(@sampleDir)
-      ]).then (results)=>
-        @platforms = _.uniq(_.flatten(results))
+      FileUtils.flatDirectoryNames([@baselineDir, @sampleDir])
+        .then (@platforms)=>
 
     writeHtmlReport:()=>
       HTMLReporter.write(@results)

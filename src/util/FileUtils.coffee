@@ -1,4 +1,4 @@
-module.exports = (fsPromise, path, Promise)->
+module.exports = (fsPromise, path, Promise, _)->
   fs = fsPromise
 
   new class FileUtils
@@ -13,14 +13,25 @@ module.exports = (fsPromise, path, Promise)->
       fsPromise.statAsync(path.join(dir,file))
         .then (stat)-> stat.isFile()
 
-    getDirectories:(dir)->
+    getDirectories:(dir)=>
       fsPromise.readdirAsync(dir)
         .filter(@directoryFilter(dir))
         .catch ()-> []
-    getFiles:(dir)->
+
+    getFiles:(dir)=>
       fsPromise.readdirAsync(dir)
         .filter(@fileFilter(dir))
         .catch ()-> []
+
+    flattenUniq:(results)-> _.uniq _.flatten(results)
+
+    flatDirectoryNames:(directories)->
+      Promise.all(_.map(directories, @getDirectories))
+        .then(@flattenUniq)
+
+    flatFilenames:(directories)->
+      Promise.all(_.map(directories, @getFiles))
+        .then(@flattenUniq)
 
     copyFile: (file, dest) -> new Promise (resolve, reject)->
       rs = fs.createReadStream(file)

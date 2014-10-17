@@ -17,9 +17,9 @@ describe.only "ScreenshotCompareReporter", ->
   it "should exist", ->
     expect(@ScreenshotCompareReporter).to.exist
 
-  it "getPlatforms()", (done)->
+  it.only "getPlatforms()", (done)->
     @reporter.getPlatforms().then (@results)=>
-      expect(@results).to.deep.equal (
+      expect(@reporter.platforms).to.deep.equal (
         [ 'LINUX_chrome_35', 'MAC_chrome_35', 'WINDOWS_chrome_35' ]
       )
       done()
