@@ -1,0 +1,6 @@
+--ui bdd
+--reporter spec
+--require ./test/globals.js
+--compilers coffee:coffee-script/register
+--recursive
+--timeout 10000
