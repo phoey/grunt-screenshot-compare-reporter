@@ -9,7 +9,7 @@ module.exports = function (grunt) {
       .replaceDependency("options", options)
       .inject(function(ScreenshotCompareReporter){
 
-        new ScreenshotCompareReporter().run(function(report){
+        new ScreenshotCompareReporter().run().done(function(report){
           if (options.teamcityReporter) {
             grunt.log.writeln('##teamcity[testStarted name=\'screenshot compare\']');
             if (report.failed && options.failTeamcity) {
@@ -18,8 +18,7 @@ module.exports = function (grunt) {
             grunt.log.writeln('##teamcity[testFinished name=\'screenshot compare\']');
           }
           cb()
-
-        })
+        }).catch(cb)
 
       })
 
