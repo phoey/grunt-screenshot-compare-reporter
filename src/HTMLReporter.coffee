@@ -195,6 +195,8 @@ class HTMLReporter
         background: #FFF8F7;
         box-shadow: 0 1px 2px 0 #DED3D3;
       }
+      .comparison:hover {
+      }
       .comparison.error {
         position: relative;
         z-index: 0;
@@ -263,7 +265,15 @@ class HTMLReporter
         }
           .comparison--shot {
             position: relative;
+          }
+          .comparison--shot__3up {
             max-width: 33.33333%;
+          }
+          .comparison--shot__2up {
+            max-width: 50%;
+          }
+          .comparison--shot__1up {
+            max-width: 100%;
           }
           .comparison--shot::after {
             position: absolute;
@@ -383,16 +393,16 @@ class HTMLReporter
     <section class="result comparison" ng-repeat="result in platform | orderBy:'failed':true" ng-class="{'error':result.failed}">
       <h2 class="comparison--name" ng-class="{'error':result.failed}">{{result.name}}</h2>
       <figure class="comparison--images">
-        <a data-id="sample" ng-href="{{platformName+'/'+result.paths.baselineName}}" class="comparison--shot comparison--sample" target="_blank" ng-if="result.view.screens === 3 || result.view.screens === 2 || result.view.screens === 1">
+        <a target="_blank" ng-href="{{platformName+'/'+result.paths.baselineName}}" class="comparison--shot comparison--shot__{{result.view.screens}}up comparison--sample" ng-class="{'comparison--shot__2up': !result.failed}">
           <img class="comparison--img" ng-src="{{platformName+'/'+result.paths.baselineName}}" />
           <img class="comparison--img__overlay" ng-src="{{platformName+'/'+result.paths.diffName}}" ng-if="result.failed && result.view.overlay" />
           <figcaption class="comparison--label" ng-if="result.view.labels">Sample</figcaption>
         </a>
-        <a data-id="diff" ng-href="{{platformName+'/'+result.paths.diffName}}" class="comparison--shot comparison--diff" target="_blank" ng-if="result.failed && result.view.screens === 3">
+        <a target="_blank" ng-href="{{platformName+'/'+result.paths.diffName}}" class="comparison--shot comparison--shot__{{result.view.screens}}up comparison--diff" ng-if="result.failed && result.view.screens === 3">
           <img class="comparison--img" ng-src="{{platformName+'/'+result.paths.diffName}}" />
           <figcaption class="comparison--label" ng-if="result.view.labels">Difference</figcaption>
         </a>
-        <a data-id="base" ng-href="{{platformName+'/'+result.paths.sampleName}}" class="comparison--shot comparison--base" target="_blank" ng-if="result.view.screens === 3 || result.view.screens === 2">
+        <a target="_blank" ng-href="{{platformName+'/'+result.paths.sampleName}}" class="comparison--shot comparison--shot__{{result.view.screens}}up comparison--base" ng-class="{'comparison--shot__2up': !result.failed}" ng-if="result.view.screens === 2 || result.view.screens === 3">
           <img class="comparison--img" ng-src="{{platformName+'/'+result.paths.sampleName}}" />
           <img class="comparison--img__overlay" ng-src="{{platformName+'/'+result.paths.diffName}}" ng-if="result.failed && result.view.overlay" />
           <figcaption class="comparison--label" ng-if="result.view.labels">Baseline</figcaption>
