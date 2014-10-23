@@ -25,7 +25,7 @@ class HTMLReporter
         margin: 0;
         padding: 0;
         height: 100%;
-        color: #30393F;
+        color: #403E3E;
         background: #FFF2F2;
         font-family: sans-serif;
         line-height: 1.5;
@@ -63,20 +63,24 @@ class HTMLReporter
       }
 
       a {
-        color: #8FAABF;
+        color: #606B7D;
         font-weight: bold;
+        text-decoration: underline solid;
       }
       a:focus,
       a:active,
       a:hover {
-        color: #5F717F;
-        outline: 0;
+        color: #54709C;
+        text-decoration: underline double;
       }
 
       button {
         -webkit-appearance: none;
         -moz-appearance:    none;
         appearance:         none;
+        -webkit-user-select: none;
+        -moz-user-select:    none;
+        user-select:         none;
         margin: 0;
         padding: 0.33rem 0.66rem;
         border: 1px solid #72403F;
@@ -188,8 +192,8 @@ class HTMLReporter
       .comparison {
         margin: 1.00rem 0;
         padding: 0.50rem;
-        background: #F2CECD;
-        box-shadow: 0 1px 2px 0 #998888;
+        background: #FFF8F7;
+        box-shadow: 0 1px 2px 0 #DED3D3;
       }
       .comparison.error {
         position: relative;
@@ -202,7 +206,8 @@ class HTMLReporter
         right: -0.25rem;
         bottom: -0.25rem;
         left: -0.25rem;
-        border: 0.25rem solid #F48986;
+        border: 0.25rem solid #FFB5AA;
+        box-shadow: 0 1px 2px 0 #DED3D3;
         z-index: -1;
       }
         .comparison--name {
@@ -221,17 +226,12 @@ class HTMLReporter
           right: -0.50rem;
           bottom: -0.50rem;
           left: 10em;
-          background: -webkit-radial-gradient(top right, ellipse cover, #F48986 15%, rgba(244,137,134,0) 75%);
-          background: -moz-radial-gradient(top right, ellipse cover,  #F48986 15%, rgba(244,137,134,0) 75%);
-          background: -ms-radial-gradient(top right, ellipse cover, #F48986 15%, rgba(244,137,134,0) 75%);
-          background: radial-gradient(ellipse at top right, #F48986 15%, rgba(244,137,134,0) 75%);
-
         }
         .comparison--images {
           margin: 0.50rem 0;
-          background: #DEB9B8;
-          box-shadow: inset -1px -1px 1px 1px #DEB9B8,
-                      inset 1px 1px 1px 1px #CCA6A5;
+          background: #F5EBE9;
+          box-shadow: inset -1px -1px 1px 1px #F5EBE9,
+                      inset 1px 1px 1px 1px #EBDBD8;
           display: -webkit-box;
           display: -moz-box;
           display: -ms-flexbox;
@@ -273,7 +273,7 @@ class HTMLReporter
             left: -0.25rem;
             content: "";
             opacity: 0;
-            border: 0.25rem solid #99B5CC;
+            border: 0.25rem solid #99A9C2;
             -webkit-transition: opacity 0.25s ease-out;
             -moz-transition:    opacity 0.25s ease-out;
             transition:         opacity 0.25s ease-out;
@@ -304,7 +304,7 @@ class HTMLReporter
               top: 0;
               right: 0;
               padding: 0 0.33rem;
-              color: #5A8B6B;
+              color: #606B7D;
               background: #FFF2F2;
               font-size: 11px;
               font-weight: normal;
