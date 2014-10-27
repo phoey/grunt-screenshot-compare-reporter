@@ -181,10 +181,14 @@ module.exports = (options, fsPromise, path)->
          background: #FFF;
         }
 
-        .missing {}
+        .missing {
+          margin: 1.5rem 0;
+        }
           .missing--text {
+            margin: 0 auto;
+            width: 4.5em;
             color: #FF725D;
-            font-size: 2em;
+            font-size: 2rem;
             text-align: center;
           }
 
@@ -311,18 +315,19 @@ module.exports = (options, fsPromise, path)->
             -webkit-justify-content: center;
             -ms-flex-pack: center;
             justify-content: center;
-            -webkit-align-content: center;
-            -ms-flex-line-pack: center;
-            align-content: center;
-            -webkit-box-align: center;
-            -moz-box-align: center;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
-            align-items: center;
+            -webkit-align-content: flex-start;
+            -ms-flex-line-pack: start;
+            align-content: flex-start;
+            -webkit-box-align: start;
+            -moz-box-align: start;
+            -webkit-align-items: flex-start;
+            -ms-flex-align: start;
+            align-items: flex-start;
             min-height: 15%;
           }
             .comparison--shot {
               position: relative;
+              overflow: hidden;
             }
             .comparison--shot__3up {
               max-width: 33.33333%;
@@ -368,9 +373,10 @@ module.exports = (options, fsPromise, path)->
               .comparison--img__overlay {
                 position: absolute;
                 top: 0;
-                right: 0;
-                bottom: 0;
                 left: 0;
+                width: auto;
+                height: auto;
+                max-width: initial;
                 opacity: 0;
                 -webkit-transition: opacity 0.25s ease-in-out;
                 -moz-transition:    opacity 0.25s ease-in-out;
