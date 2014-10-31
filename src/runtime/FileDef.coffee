@@ -13,6 +13,10 @@ module.exports = (path, fsPromise, options, FileUtils)->
         @filepath = path.join(options.reportDirectory, platform, "#{name}-#{type}.png")
         @url = path.join(platform, "#{name}-#{type}.png")
         FileUtils.copyFile(fullPath, @filepath)
+          .catch (e)=>
+            delete @fullPath
+            delete @url
+            @exists = false
 
 
     @makeCopy:(type, platform, filename)->
