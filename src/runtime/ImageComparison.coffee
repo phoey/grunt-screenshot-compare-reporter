@@ -1,10 +1,12 @@
+domain = require('domain')
+
 module.exports = (options, path, Util, Promise, fsPromise, FileDef, _, resemble)->
 
   {baselineDirectory, sampleDirectory} = options
 
   class ImageComparison
 
-    THRESHOLD:4
+    THRESHOLD:0
 
     constructor:(@filename, @platform)->
       @name = @filename.replace(".png", "")
@@ -45,14 +47,21 @@ module.exports = (options, path, Util, Promise, fsPromise, FileDef, _, resemble)
         @runResemble()
 
     resemblePromise:(image1, image2)-> new Promise (resolve, reject)=>
-      resemble
-        .resemble(image1)
-        .compareTo(image2)
-        .onComplete(resolve)
+      d = domain.create()
+      d.on "error", (e)->
+        resolve()
+      d.run ->
+        resemble
+          .resemble(image1)
+          .compareTo(image2)
+          .onComplete(resolve)
+
+
 
     runResemble:()->
       @resemblePromise(@sampleFile.filepath, @baselineFile.filepath)
         .then(@differenceResult)
+        .catch (e)->
 
     storeScreenshot: (rawData)->
       data = rawData.replace(/^data:image\/png;base64,/,"")

@@ -27,8 +27,10 @@ module.exports = (options, _, Util, Promise, FileUtils, path, ImageComparison, m
 
 
     compareFiles:()=>
-      Promise.all(_.map @filenames, @compareFile)
+      Promise.map(@filenames, @compareFile, {concurrency:10})
         .then (@results)=>
+          @results = _.compact(@results)
 
     compareFile:(filename)=>
       ImageComparison.compare(filename, @platform)
+
