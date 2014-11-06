@@ -69,7 +69,7 @@ module.exports = (options, path, Util, Promise, fsPromise, FileDef, _, resemble)
 
 
     differenceResult:(difference)=>
-      hasDifference = parseInt(difference.misMatchPercentage) >= @THRESHOLD
+      hasDifference = parseInt(difference.misMatchPercentage) > @THRESHOLD
 
       @result = {
         @name
