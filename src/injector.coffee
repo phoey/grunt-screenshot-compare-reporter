@@ -2,7 +2,7 @@ iocExtra = require("simple-ioc-extra")
 
 module.exports = ()->
   ioc = iocExtra()
-
+  ioc.reset()
   ioc.registerLibraries {
     "Promise"   :"bluebird"
     "resemble"  :"resemble"
