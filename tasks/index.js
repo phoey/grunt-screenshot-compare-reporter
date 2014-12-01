@@ -1,8 +1,8 @@
 require("coffee-script/register")
-var injector = require("../src/injector");
 
 module.exports = function (grunt) {
   grunt.registerMultiTask('screenshot_compare_reporter', 'compares and reports', function() {
+    var injector = require("../src/injector");
     var options = this.options(this.data)
     var cb = this.async();
     injector()
