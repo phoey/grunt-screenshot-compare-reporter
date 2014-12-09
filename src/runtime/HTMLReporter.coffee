@@ -74,6 +74,7 @@ module.exports = (options, fsPromise, path)->
         a[href]:hover {
           color: #54709C;
           text-decoration: underline double;
+          outline: 0;
         }
 
         button {
@@ -195,6 +196,15 @@ module.exports = (options, fsPromise, path)->
          background: #FFF;
         }
 
+        .check {
+          width: 1em;
+          height: auto;
+          vertical-align: baseline;
+        }
+        .check polyline {
+          stroke-width: 2px;
+        }
+
         .missing {
           margin: 1.5rem 0;
         }
@@ -244,18 +254,20 @@ module.exports = (options, fsPromise, path)->
             .report--opts {
               margin-left: auto;
             }
-        .platform {}
+        .platform {
+          overflow: hidden;
+        }
           .platform--name[href] {
             display: block;
             padding: 0.25rem;
             color: #7F5B55;
             /*background: #FFEDE5;*/
             border: 1px solid #E8D4D1;
+            border-bottom-width: 3px;
             font-weight: bold;
             font-size: 1.25rem;
             text-decoration: none !important;
             text-transform: uppercase;
-            box-shadow: 0 2px 1px 0 #E8D4D1;
           }
           .platform--name.open {
             vertical-align: text-bottom;
@@ -274,12 +286,12 @@ module.exports = (options, fsPromise, path)->
           }
           .platform--name.open::before {
             margin-bottom: -0.34rem;
-            content: "\\25F8";
+            content: "\25F8";
             vertical-align: text-bottom;
           }
           .platform--name.closed::before {
             margin-top: -1rem;
-            content: "\\25FF";
+            content: "\25FF";
             vertical-align: text-top;
           }
           .platform--results {
@@ -295,6 +307,11 @@ module.exports = (options, fsPromise, path)->
             max-height: 600%;
             opacity: 0.99999;
             overflow: visible;
+          }
+          .platform--hide {
+            margin-bottom: 4.00rem;
+            float: right;
+            text-transform: uppercase;
           }
 
         .screenshot,
@@ -415,7 +432,10 @@ module.exports = (options, fsPromise, path)->
             .comparison--shot[href]:hover::after {
               opacity: 0.99999;
             }
-            .comparison--sample {}
+            .comparison--sample {
+              min-width: 5em;
+              text-align: center;
+            }
             .comparison--diff {}
             .comparison--diff.hide {
               display: none;
@@ -612,7 +632,7 @@ module.exports = (options, fsPromise, path)->
 
     <div class="platform" ng-repeat="(platformName,platform) in results">
 
-      <a class="platform--name close"
+      <a class="platform--name close" id="{{platformName}}"
        ng-class="{'open': platform.view.open, 'closed': !platform.view.open}"
        ng-href="{{platform.view.open && '#close' || !platform.view.open && '#open'}}"
        ng-click="platform.view.open = !platform.view.open">
@@ -725,6 +745,18 @@ module.exports = (options, fsPromise, path)->
             </menu>
           </div>
         </section>
+
+        <a class="platform--hide"
+         ng-href="#{{platformName}}"
+         ng-click="platform.view.open = !platform.view.open">
+          <i class="icon check">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 9">
+              <polyline fill="none" stroke="currentColor" points="1,5 4,8 9,1" />
+            </svg>
+          </i>
+          Hide {{platformName}}
+        </a>
+
       </div>
 
     </div>
