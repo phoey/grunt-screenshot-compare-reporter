@@ -286,12 +286,12 @@ module.exports = (options, fsPromise, path)->
           }
           .platform--name.open::before {
             margin-bottom: -0.34rem;
-            content: "\25F8";
+            content: "\\25F8";
             vertical-align: text-bottom;
           }
           .platform--name.closed::before {
             margin-top: -1rem;
-            content: "\25FF";
+            content: "\\25FF";
             vertical-align: text-top;
           }
           .platform--results {
@@ -747,7 +747,7 @@ module.exports = (options, fsPromise, path)->
         </section>
 
         <a class="platform--hide"
-         ng-href="#{{platformName}}"
+         ng-href="{{'#' + platformName}}"
          ng-click="platform.view.open = !platform.view.open">
           <i class="icon check">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 9">
@@ -788,4 +788,3 @@ module.exports = (options, fsPromise, path)->
     saveReport: =>
       fsPromise.writeFileAsync(path.join(@resultsDir, "results.js"), "window.results = #{JSON.stringify(@report)}")
         .then(@addHtmlReportViewer)
-
