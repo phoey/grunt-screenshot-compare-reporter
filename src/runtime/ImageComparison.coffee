@@ -11,8 +11,8 @@ module.exports = (options, path, Util, Promise, fsPromise, FileDef, _, resemble)
     constructor:(@filename, @platform)->
       @name = @filename.replace(".png", "")
 
-      @diffFilepath = path.join(options.reportDirectory, platform, @name+"-diff.png")
-      @diffUrl = path.join(platform, @name+"-diff.png")
+      @diffFilepath = path.join(options.reportDirectory, @platform, @name+"-diff.png")
+      @diffUrl = path.join(@platform, @name+"-diff.png")
 
     @compare:(filename, platform)->
       new ImageComparison(filename, platform).compare()
