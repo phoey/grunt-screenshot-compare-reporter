@@ -74,6 +74,7 @@ module.exports = (options, fsPromise, path)->
         a[href]:hover {
           color: #54709C;
           text-decoration: underline double;
+          outline: 0;
         }
 
         button {
@@ -132,11 +133,11 @@ module.exports = (options, fsPromise, path)->
         }
 
         .button-group {
-          display: -webkit-box;
-          display: -moz-box;
-          display: -ms-flexbox;
-          display: -webkit-flex;
-          display: flex;
+          display: -webkit-inline-box;
+          display: -moz-inline-box;
+          display: -ms-inline-flexbox;
+          display: -webkit-inline-flex;
+          display: inline-flex;
           -webkit-box-direction: normal;
           -moz-box-direction: normal;
           -webkit-box-orient: horizontal;
@@ -161,8 +162,22 @@ module.exports = (options, fsPromise, path)->
           -ms-flex-align: center;
           align-items: center;
         }
+
           .button-group button + button {
             border-left: 0;
+          }
+
+          .button-group--label {
+            display: inline-block;
+            padding: 0.33rem 0.66rem;
+            color: #5B4241;
+            font: inherit;
+            font-size: 14px;
+            line-height: 1.5;
+            font-weight: bold;
+            text-transform: uppercase;
+            white-space: nowrap;
+            vertical-align: center;
           }
 
         .icon {
@@ -181,6 +196,15 @@ module.exports = (options, fsPromise, path)->
          background: #FFF;
         }
 
+        .check {
+          width: 1em;
+          height: auto;
+          vertical-align: baseline;
+        }
+        .check polyline {
+          stroke-width: 2px;
+        }
+
         .missing {
           margin: 1.5rem 0;
         }
@@ -192,18 +216,58 @@ module.exports = (options, fsPromise, path)->
             text-align: center;
           }
 
-        .platform {}
+        .report {}
+          .report--toolbar {
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-direction: normal;
+            -moz-box-direction: normal;
+            -webkit-box-orient: horizontal;
+            -moz-box-orient: horizontal;
+            -webkit-flex-direction: row;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -webkit-flex-wrap: nowrap;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -webkit-box-pack: justify;
+            -moz-box-pack: justify;
+            -webkit-justify-content: space-between;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -webkit-align-content: stretch;
+            -ms-flex-line-pack: stretch;
+            align-content: stretch;
+            -webkit-box-align: center;
+            -moz-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+          }
+            .report--view {
+              margin-right: auto;
+            }
+            .report--opts {
+              margin-left: auto;
+            }
+        .platform {
+          overflow: hidden;
+        }
           .platform--name[href] {
             display: block;
             padding: 0.25rem;
             color: #7F5B55;
             /*background: #FFEDE5;*/
             border: 1px solid #E8D4D1;
+            border-bottom-width: 3px;
             font-weight: bold;
             font-size: 1.25rem;
             text-decoration: none !important;
             text-transform: uppercase;
-            box-shadow: 0 2px 1px 0 #E8D4D1;
           }
           .platform--name.open {
             vertical-align: text-bottom;
@@ -243,6 +307,11 @@ module.exports = (options, fsPromise, path)->
             max-height: 600%;
             opacity: 0.99999;
             overflow: visible;
+          }
+          .platform--hide {
+            margin-bottom: 4.00rem;
+            float: right;
+            text-transform: uppercase;
           }
 
         .screenshot,
@@ -363,7 +432,10 @@ module.exports = (options, fsPromise, path)->
             .comparison--shot[href]:hover::after {
               opacity: 0.99999;
             }
-            .comparison--sample {}
+            .comparison--sample {
+              min-width: 5em;
+              text-align: center;
+            }
             .comparison--diff {}
             .comparison--diff.hide {
               display: none;
@@ -465,15 +537,102 @@ module.exports = (options, fsPromise, path)->
             return results;
           };
           $scope.results = addViewModels(window.results);
+          $scope.view = _.extend({}, resultViewModel);
+          $scope.setAllScreens = function(n) {
+            if ( n !== $scope.view.screens ) {
+              $scope.view.screens = n;
+              _.each($scope.results, function(platform) {
+                _.each(platform.results, function(result) {
+                  result.view.screens = n;
+                });
+              });
+            }
+          };
+          $scope.toggleAllOverlays = function(o) {
+            $scope.view.overlay = !$scope.view.overlay;
+            _.each($scope.results, function(platform) {
+              _.each(platform.results, function(result) {
+                result.view.overlay = $scope.view.overlay;
+              });
+            });
+            return $scope.view.overlay;
+          };
+          $scope.toggleAllLabels = function(l) {
+            $scope.view.labels = !$scope.view.labels;
+            _.each($scope.results, function(platform) {
+              _.each(platform.results, function(result) {
+                result.view.labels = $scope.view.labels;
+              });
+            });
+            return $scope.view.labels;
+          };
         }
       </script>
   </head>
 
-  <body ng-controller="ReportController">
+  <body class="report" ng-controller="ReportController">
+
+    <menu class="report--toolbar">
+      <menu class="button-group report--view">
+        <button type="button" title="Sample only"
+         ng-click="setAllScreens(1)"
+         ng-class="{'active': view.screens === 1}">
+          <i class="icon square"></i>
+          <b class="icon--text">1 up</b>
+        </button>
+        <button type="button" title="Sample vs. Baseline"
+         ng-click="setAllScreens(2)"
+         ng-class="{'active': view.screens === 2}">
+          <i class="icon square"></i>
+          <i class="icon square"></i>
+          <b class="icon--text">2 up</b>
+        </button>
+        <button type="button" title="Sample, Difference, and Baseline"
+         ng-click="setAllScreens(3)"
+         ng-class="{'active': view.screens === 3}">
+          <i class="icon square"></i>
+          <i class="icon square"></i>
+          <i class="icon square"></i>
+          <b class="icon--text">3 up</b>
+        </button>
+      </menu>
+      <menu class="report--opts">
+        <menu class="button-group">
+          <span class="button-group--label">
+            Overlays:
+          </span>
+          <button type="button"
+           ng-click="toggleAllOverlays()"
+           ng-class="{'active': view.overlay == true}">
+            On
+          </button>
+          <button type="button"
+           ng-click="toggleAllOverlays()"
+           ng-class="{'active': view.overlay == false}">
+            Off
+          </button>
+        </menu>
+        <menu class="button-group">
+          <span class="button-group--label">
+            Labels:
+          </span>
+          <button type="button"
+           ng-click="toggleAllLabels()"
+           ng-class="{'active': view.labels == true}">
+            On
+          </button>
+          <button type="button"
+           ng-click="toggleAllLabels()"
+           ng-class="{'active': view.labels == false}">
+            Off
+          </button>
+        </menu>
+      </menu>
+    </menu>
 
     <div class="platform" ng-repeat="(platformName,platform) in results">
 
-      <a class="platform--name close"
+      <a class="platform--name close" id="{{platformName}}"
        ng-class="{'open': platform.view.open, 'closed': !platform.view.open}"
        ng-href="{{platform.view.open && '#close' || !platform.view.open && '#open'}}"
        ng-click="platform.view.open = !platform.view.open">
@@ -586,6 +745,18 @@ module.exports = (options, fsPromise, path)->
             </menu>
           </div>
         </section>
+
+        <a class="platform--hide"
+         ng-href="{{'#' + platformName}}"
+         ng-click="platform.view.open = !platform.view.open">
+          <i class="icon check">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 9">
+              <polyline fill="none" stroke="currentColor" points="1,5 4,8 9,1" />
+            </svg>
+          </i>
+          Hide {{platformName}}
+        </a>
+
       </div>
 
     </div>
@@ -617,4 +788,3 @@ module.exports = (options, fsPromise, path)->
     saveReport: =>
       fsPromise.writeFileAsync(path.join(@resultsDir, "results.js"), "window.results = #{JSON.stringify(@report)}")
         .then(@addHtmlReportViewer)
-
